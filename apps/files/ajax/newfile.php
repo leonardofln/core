@@ -139,16 +139,7 @@ if($source) {
 
 	if($success) {
 		$meta = \OC\Files\Filesystem::getFileInfo($target);
-		$id = $meta['fileid'];
-		$mime = $meta['mimetype'];
-		$size = $meta['size'];
-		OCP\JSON::success(array('data' => array(
-			'id' => $id,
-			'mime' => $mime,
-			'size' => $size,
-			'content' => $content,
-			'etag' => $meta['etag'],
-		)));
+		OCP\JSON::success(array('data' => \OCA\Files\Helper::formatFileInfo($meta)));
 		exit();
 	}
 }

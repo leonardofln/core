@@ -9,7 +9,7 @@
  */
 
 /* global OC, t, n, FileList, FileActions, Files, BreadCrumb */
-/* global procesSelection, dragOptions, SVGSupport, replaceSVG */
+/* global procesSelection, dragOptions, SVGSupport */
 window.FileList = {
 	appName: t('files', 'Files'),
 	isEmpty: true,
@@ -160,6 +160,22 @@ window.FileList = {
 		this.$fileList.trigger(jQuery.Event("updated"));
 	},
 	/**
+	 * If SVG is not supported, replaces the given images's extension
+	 * from ".svg" to ".png".
+	 * If SVG is supported, return the image path as is.
+	 * @param icon image path
+	 * @return fixed image path
+	 */
+	_replaceSVG: function(icon) {
+		if (!SVGSupport()) {
+			var i = icon.lastIndexOf('.svg');
+			if (i >= 0) {
+				icon = icon.substr(0, i) + '.png' + icon.substr(i+4);
+			}
+		}
+		return icon;
+	},
+	/**
 	 * Creates a new table row element using the given file data.
 	 * @param fileData map of file attributes
 	 * @param options map of attribute "loading" whether the entry is currently loading
@@ -167,7 +183,7 @@ window.FileList = {
 	 */
 	_createRow: function(fileData, options) {
 		var td, simpleSize, basename, extension, sizeColor,
-			icon = fileData.icon,
+			icon = FileList._replaceSVG(fileData.icon),
 			name = fileData.name,
 			type = fileData.type || 'file',
 			mtime = parseInt(fileData.mtime, 10) || new Date().getTime(),
@@ -643,7 +659,7 @@ window.FileList = {
 									}, null, null, result.data.etag);
 								}
 								else {
-									tr.find('td.filename').removeClass('preview').attr('style','background-image:url('+fileInfo.icon+')');
+									tr.find('td.filename').removeClass('preview').attr('style','background-image:url('+FileList._replaceSVG(fileInfo.icon)+')');
 								}
 							}
 							// reinsert row

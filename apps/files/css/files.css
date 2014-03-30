@@ -387,6 +387,10 @@ a.action>img { max-height:16px; max-width:16px; vertical-align:text-bottom; }
 	padding-bottom: 8px;
 	border-bottom: none;
 }
+.summary td.filesize {
+	padding-right: 34px;
+}
+
 .summary .info {
 	margin-left: 55px;
 }

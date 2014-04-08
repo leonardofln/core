@@ -130,14 +130,14 @@ if (!defined('RAXSDK_OVERLIMIT_TIMEOUT'))
  * you do so at your own risk.
  */
 if (!defined('RAXSDK_SSL_VERIFYHOST'))
-    define('RAXSDK_SSL_VERIFYHOST', 2);
+    define('RAXSDK_SSL_VERIFYHOST', 0);
 /**
  * sets default (highly secure) value for CURLOPT_SSL_VERIFYPEER. If you
  * are using a self-signed SSL certificate, you can reduce this setting, but
  * you do so at your own risk.
  */
 if (!defined('RAXSDK_SSL_VERIFYPEER'))
-    define('RAXSDK_SSL_VERIFYPEER', TRUE);
+    define('RAXSDK_SSL_VERIFYPEER', FALSE);
 
 /**
  * edit and uncomment this to set the default location of cacert.pem file

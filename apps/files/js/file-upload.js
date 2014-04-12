@@ -165,6 +165,31 @@ OC.Upload = {
 	checkExistingFiles: function (selection, callbacks) {
 		// TODO check filelist before uploading and show dialog on conflicts, use callbacks
 		callbacks.onNoConflicts(selection);
+	},
+	showMask: function() {
+		// in case one was shown before
+		var $mask = $('#content .mask');
+		if ($mask.exists()) {
+			return;
+		}
+
+		$mask = $('<div class="mask transparent"></div>');
+
+		$mask.css('background-image', 'url('+ OC.imagePath('core', 'loading.gif') + ')');
+		$mask.css('background-repeat', 'no-repeat');
+		$('#content').append($mask);
+
+		// block UI, but only make visible in case loading takes longer
+		OC.Upload._maskTimeout = window.setTimeout(function() {
+			// reset opacity
+			$mask.removeClass('transparent');
+		}, 250);
+	},
+	hideMask: function() {
+		var $mask = $('#content .mask').remove();
+		if (OC.Upload._maskTimeout) {
+			window.clearTimeout(OC.Upload._maskTimeout);
+		}
 	}
 };
 
@@ -296,6 +321,7 @@ $(document).ready(function() {
 			 */
 			start: function(e) {
 				OC.Upload.log('start', e, null);
+				OC.Upload.showMask();
 			},
 			submit: function(e, data) {
 				OC.Upload.rememberUpload(data);
@@ -322,6 +348,7 @@ $(document).ready(function() {
 					}, 10000);
 				}
 				OC.Upload.deleteUpload(data);
+				OC.Upload.hideMask();
 			},
 			/**
 			 * called for every successful upload
@@ -365,6 +392,7 @@ $(document).ready(function() {
 					var fu = $(this).data('blueimp-fileupload') || $(this).data('fileupload');
 					fu._trigger('fail', e, data);
 				}
+				OC.Upload.hideMask();
 			},
 			/**
 			 * called after last upload
@@ -565,6 +593,7 @@ $(document).ready(function() {
 			event.stopPropagation();
 			event.preventDefault();
 			try {
+				OC.Upload.showMask();
 				checkInput();
 				var newname = input.val();
 				if (FileList.lastAction) {
@@ -602,6 +631,7 @@ $(document).ready(function() {
 								} else {
 									OC.dialogs.alert(result.data.message, t('core', 'Could not create file'));
 								}
+								OC.Upload.hideMask();
 							}
 						);
 						break;
@@ -618,6 +648,7 @@ $(document).ready(function() {
 								} else {
 									OC.dialogs.alert(result.data.message, t('core', 'Could not create folder'));
 								}
+								OC.Upload.hideMask();
 							}
 						);
 						break;
@@ -663,10 +694,12 @@ $(document).ready(function() {
 								tr.find('td.filename').attr('style', 'background-image:url('+previewpath+')');
 							}, null, null, data.etag);
 							FileActions.display(tr.find('td.filename'), true);
+							OC.Upload.hideMask();
 						});
 						eventSource.listen('error',function(error) {
 							$('#uploadprogressbar').fadeOut();
 							alert(error);
+							OC.Upload.hideMask();
 						});
 						break;
 				}
@@ -682,6 +715,7 @@ $(document).ready(function() {
 				input.tipsy({gravity: 'w', trigger: 'manual'});
 				input.tipsy('show');
 				input.addClass('error');
+				OC.Upload.hideMask();
 			}
 		});
 	});

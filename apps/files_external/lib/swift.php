@@ -111,6 +111,7 @@ class Swift extends \OC\Files\Storage\Common {
 	 */
 	private function cacheObject($path, $object) {
 		$this->objectCache[$path] = $object;
+		\OC::$session->set('objectCache', serialize($this->objectCache));
 	}
 
 	/**
@@ -120,6 +121,7 @@ class Swift extends \OC\Files\Storage\Common {
 	 */
 	private function uncacheObject($path) {
 		unset($this->objectCache[$path]);
+		\OC::$session->set('objectCache', serialize($this->objectCache));
 	}
 
 	/**
@@ -175,6 +177,10 @@ class Swift extends \OC\Files\Storage\Common {
 		} catch (Exceptions\ContainerNotFoundError $e) {
 			$this->container = $this->connection->Container();
 			$this->container->Create(array('name' => $this->bucket));
+		}
+
+		if (empty($this->objectCache)) {
+			$this->objectCache = unserialize(\OC::$session->get('objectCache'));
 		}
 
 		if (!$this->file_exists('.')) {

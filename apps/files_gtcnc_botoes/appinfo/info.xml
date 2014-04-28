@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<info>
+	<id>files_gtcnc_botoes</id>
+	<name>Remove botao novo e upload</name>
+	<description>Este app remove os botões novo e upload para arquivos locais (diretorio raiz).</description>
+	<licence></licence>
+	<author>Leonardo de Oliveira (GT-CNC)</author>
+	<require>6</require>
+	<version>1.0.0</version>
+</info>

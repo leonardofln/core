@@ -19,9 +19,7 @@ if($_['displayNameChangeSupported']) {
 <form id="displaynameform">
 	<fieldset class="personalblock">
 		<h2><?php echo $l->t('Full Name');?></h2>
-		<input type="text" id="displayName" name="displayName" value="<?php p($_['displayName'])?>" />
-        <span class="msg"></span>
-		<input type="hidden" id="oldDisplayName" name="oldDisplayName" value="<?php p($_['displayName'])?>" />
+		<em><?php p($_['displayName'])?></em>
 	</fieldset>
 </form>
 <?php
@@ -34,9 +32,7 @@ if($_['passwordChangeSupported']) {
 <form id="lostpassword">
 	<fieldset class="personalblock">
 		<h2><?php p($l->t('Email'));?></h2>
-		<input type="text" name="email" id="email" value="<?php p($_['email']); ?>"
-			placeholder="<?php p($l->t('Your email address'));?>" /><span class="msg"></span><br />
-		<em><?php p($l->t('Fill in an email address to enable password recovery'));?></em>
+		<em><?php p($_['email']); ?></em>
 	</fieldset>
 </form>
 <?php
